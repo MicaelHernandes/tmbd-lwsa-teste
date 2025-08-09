@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthRegisterUserRequest;
 use Illuminate\Http\Request;
 
-class RegisterController extends Controller
+class AuthController extends Controller
 {
     public function register(AuthRegisterUserRequest $request)
     {
