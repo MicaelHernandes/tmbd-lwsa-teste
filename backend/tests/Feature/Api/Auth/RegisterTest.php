@@ -9,5 +9,44 @@ describe('Teste de validação ao registrar usuario', function (){
                  ->assertJsonValidationErrors(['name', 'email', 'password', 'password_confirmation']);
     });
 
+    it('deve falhar ao tentar registrar usuario com email inválido', function () {
+
+        $correctPassword = fake()->password(8, 20);
+
+        $response = $this->postJson(route('auth.register'), [
+            'name' => fake()->name(),
+            'email' => 'invalid-email',
+            'password' => $correctPassword,
+            'password_confirmation' => $correctPassword,
+        ]);
+
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['email']);
+    });
+
+    it('deve falhar ao tentar registrar usuario com senha muito curta', function () {
+        $response = $this->postJson(route('auth.register'), [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => 'short',
+            'password_confirmation' => 'short',
+        ]);
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['password']);
+    });
+
+    it('deve falhar ao tentar registrar usuario com senha não confirmada', function () {
+        $correctPassword = fake()->password(8, 20);
+
+        $response = $this->postJson(route('auth.register'), [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => $correctPassword,
+            'password_confirmation' => 'different_password',
+        ]);
+
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['password']);
+    });
 });
 
