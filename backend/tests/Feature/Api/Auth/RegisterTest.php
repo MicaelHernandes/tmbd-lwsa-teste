@@ -53,17 +53,24 @@ describe('Teste de validação ao registrar usuario', function (){
 describe('Teste de registro de usuário', function () {
 
     it('deve registrar um novo usuário com dados válidos', function () {
+        $correctName = fake()->name();
+        $correctEmail = fake()->unique()->safeEmail();
         $correctPassword = fake()->password(8, 20);
 
         $response = $this->postJson(route('auth.register'), [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $correctName,
+            'email' => $correctEmail,
             'password' => $correctPassword,
             'password_confirmation' => $correctPassword,
         ]);
 
         $response->assertStatus(201)
                  ->assertJsonStructure(['message', 'user']);
+
+        $this->assertDatabaseHas('users', [
+            'name' => $correctName,
+            'email' => $correctEmail,
+        ]);
     });
 });
 
