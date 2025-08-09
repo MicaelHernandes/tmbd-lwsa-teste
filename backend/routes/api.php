@@ -2,12 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegisterController;
 
-Route::get('/test', function () {
-  $movie =  app(\App\Services\TMDB\MovieService::class)->getMovieByName('The Matrix');
-  return response()->json($movie);
+Route::middleware('guest')->prefix('auth')->group(function () {
+    Route::post('/register', [RegisterController::class, 'register'])->name('auth.register');
 });
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
