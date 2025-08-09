@@ -24,7 +24,8 @@ class AuthRegisterUserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string|min:8',
         ];
     }
 
@@ -44,6 +45,9 @@ class AuthRegisterUserRequest extends FormRequest
             'email.unique' => 'O e-mail informado já está em uso.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
+            'password_confirmation.required' => 'O campo confirmação de senha é obrigatório.',
+            'password_confirmation.min' => 'A confirmação de senha deve ter pelo menos 8 caracteres.',
         ];
     }
 }

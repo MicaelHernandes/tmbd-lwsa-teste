@@ -6,7 +6,7 @@ describe('Teste de validação ao registrar usuario', function (){
         $response = $this->postJson(route('auth.register'), []);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['name', 'email', 'password']);
+                 ->assertJsonValidationErrors(['name', 'email', 'password', 'password_confirmation']);
     });
 
 });
