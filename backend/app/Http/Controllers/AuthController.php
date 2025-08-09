@@ -6,6 +6,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterUserRequest;
 use App\Services\TMDB\Auth\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,13 @@ class AuthController extends Controller
 
     public function login(AuthLoginRequest $request)
     {
-
+        try {
+            $token = $this->registerUserService->login($request->validated());
+            return response()->json(['message' => 'Login realizado com sucesso!', 'token' => $token], 200);
+        }catch (ValidationException $e) {
+            return response()->json(['message' => 'Credenciais inválidas!', 'errors' => $e->errors()], 401);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Ocorreu um erro durante a solicitação!', 'error' => $th->getMessage()], 500);
+        }
     }
 }
