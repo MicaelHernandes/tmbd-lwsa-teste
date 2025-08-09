@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterUserRequest;
 use App\Services\TMDB\Auth\UserService;
 use Illuminate\Http\Request;
@@ -23,5 +24,10 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Ocorreu um erro durante a solicitação!', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function login(AuthLoginRequest $request)
+    {
+
     }
 }
