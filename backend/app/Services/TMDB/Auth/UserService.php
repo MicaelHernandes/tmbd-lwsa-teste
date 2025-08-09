@@ -4,6 +4,7 @@ namespace App\Services\TMDB\Auth;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\ValidationException;
 
 class UserService
 {
@@ -23,5 +24,16 @@ class UserService
         ]);
 
         return $user;
+    }
+
+    public function login(array $data): string
+    {
+        if (!auth()->attempt($data)) {
+            throw ValidationException::withMessages([
+                'email' => ['As credenciais informadas não são válidas.'],
+            ]);
+        }
+
+        return auth()->user()->createToken('auth_token')->plainTextToken;
     }
 }
