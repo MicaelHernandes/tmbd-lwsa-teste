@@ -59,6 +59,6 @@ describe('Test de autenticação ao fazer login', function () {
         ]);
 
         $response->assertStatus(401)
-                 ->assertJson(['message' => 'Unauthorized']);
+                 ->assertJson(['message' => 'Credenciais inválidas!']);
     });
 });
