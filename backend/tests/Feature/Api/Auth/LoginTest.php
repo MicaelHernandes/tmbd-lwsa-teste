@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 describe('Test de validação ao fazer login', function () {
 
     it('deve falhar ao tentar fazer login sem passar os campos obrigatórios', function () {
@@ -27,5 +29,36 @@ describe('Test de validação ao fazer login', function () {
 
         $response->assertStatus(422)
                  ->assertJsonValidationErrors(['password']);
+    });
+});
+
+describe('Test de autenticação ao fazer login', function () {
+
+    it('deve autenticar usuário com credenciais válidas', function () {
+        $user = User::factory()->create([
+            'password' => bcrypt('validPassword123'),
+        ]);
+
+        $response = $this->postJson(route('auth.login'), [
+            'email' => $user->email,
+            'password' => 'validPassword123',
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['token']);
+    });
+
+    it('deve falhar ao tentar fazer login com senha incorreta', function () {
+        $user = User::factory()->create([
+            'password' => bcrypt('validPassword123'),
+        ]);
+
+        $response = $this->postJson(route('auth.login'), [
+            'email' => $user->email,
+            'password' => 'wrongPassword',
+        ]);
+
+        $response->assertStatus(401)
+                 ->assertJson(['message' => 'Unauthorized']);
     });
 });
