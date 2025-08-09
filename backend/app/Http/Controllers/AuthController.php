@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterUserRequest;
 use App\Services\TMDB\Auth\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -17,7 +18,7 @@ class AuthController extends Controller
         $this->registerUserService = $service;
     }
 
-    public function register(AuthRegisterUserRequest $request)
+    public function register(AuthRegisterUserRequest $request) : JsonResponse
     {
         try{
             $user = $this->registerUserService->register($request->validated());
@@ -27,7 +28,7 @@ class AuthController extends Controller
         }
     }
 
-    public function login(AuthLoginRequest $request)
+    public function login(AuthLoginRequest $request): JsonResponse
     {
         try {
             $token = $this->registerUserService->login($request->validated());
