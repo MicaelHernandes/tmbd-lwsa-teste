@@ -24,7 +24,7 @@ abstract class BaseService
     protected function sendRequest($endpoint, $data = [], $method = 'GET') : mixed
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Bearer '.$this->token,
             'Accept' => 'application/json',
         ])
             ->acceptJson()
