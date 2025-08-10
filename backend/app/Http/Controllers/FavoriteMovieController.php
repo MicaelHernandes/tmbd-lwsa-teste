@@ -17,8 +17,19 @@ class FavoriteMovieController extends Controller
     {
         $this->favoriteMovieService = $favoriteMovieService;
     }
+
     public function index(FavoriteMovieListRequest $request) : JsonResponse
     {
+        try{
+            $genre = $request->query('genre', null);
+            $movies = $this->favoriteMovieService->getAllFavorites($genre);
+            return response()->json($movies, 200);
+        }catch (\Throwable $th){
+            return response()->json([
+                'message' => 'Erro ao buscar filmes favoritos.',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(FavoriteMovieStoreRequest $request) : JsonResponse
