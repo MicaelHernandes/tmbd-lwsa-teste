@@ -281,7 +281,7 @@
 					"response": []
 				},
 				{
-					"name": "Adiciona Favorito Copy",
+					"name": "Deleta favorito",
 					"request": {
 						"auth": {
 							"type": "noauth"
