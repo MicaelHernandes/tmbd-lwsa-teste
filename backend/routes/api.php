@@ -19,6 +19,7 @@ Route::prefix('movies')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('favorite_movies')->group(function () {
+        Route::get('/', [FavoriteMovieController::class, 'index'])->name('favorite_movies.index');
         Route::post('/', [FavoriteMovieController::class, 'store'])->name('favorite_movies.store');
         Route::delete('/', [FavoriteMovieController::class, 'destroy'])->name('favorite_movies.destroy');
     });
