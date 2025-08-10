@@ -54,7 +54,7 @@ describe('Deletar filme favorito', function () {
             ]))
             ->assertNoContent();
 
-        $this->assertDatabaseMissing('favorite_movies', [
+        $this->assertDatabaseMissing('user_favorite_movies', [
             'user_id' => $user->id,
             'movie_id' => $movieId,
         ]);
