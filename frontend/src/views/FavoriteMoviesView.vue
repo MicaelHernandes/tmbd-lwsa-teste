@@ -160,7 +160,12 @@ const fetchFavoriteMovies = async () => {
 
 const removeFromFavorites = async (movieId: number) => {
   try {
-    await api.delete(`/favorite_movies/${movieId}`)
+    await api.delete(`/favorite_movies`,
+      {
+        params: {
+          movie_id: movieId
+        }
+      })
     movies.value = movies.value.filter(movie => movie.id !== movieId)
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
