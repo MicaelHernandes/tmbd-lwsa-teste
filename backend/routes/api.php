@@ -9,6 +9,7 @@ use App\Http\Controllers\FavoriteMovieController;
 Route::middleware('guest')->prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::get('/me', [AuthController::class, 'me'])->name('auth.me')->middleware('auth:sanctum');
 });
 
 Route::prefix('movies')->group(function () {

@@ -17,6 +17,11 @@ class AuthController extends Controller
         $this->registerUserService = $service;
     }
 
+    public function me() : JsonResponse
+    {
+        return response()->json(['user' => auth()->user()], 200);
+    }
+
     public function register(AuthRegisterUserRequest $request) : JsonResponse
     {
         try{
