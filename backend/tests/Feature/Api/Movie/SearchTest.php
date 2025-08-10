@@ -30,3 +30,11 @@ describe('Validação de busca de filmes', function () {
                  ->assertJsonValidationErrors(['query']);
     });
 });
+
+describe('Busca de filmes', function () {
+    it('deve retornar resultados quando o parâmetro "query" for válido', function () {
+        $response = $this->getJson(route('movies.search', ['query' => 'Inception']));
+
+        $response->assertStatus(200);
+    });
+});
