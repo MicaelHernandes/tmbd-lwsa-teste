@@ -3,9 +3,7 @@
     <div class="w-full px-6 lg:px-12 py-12">
       <!-- Header -->
       <div class="text-center mb-16">
-        <h1 class="text-4xl font-medium text-gray-900 mb-2">
-          Movie Catalog
-        </h1>
+        <h1 class="text-4xl font-medium text-gray-900 mb-2">Movie Catalog</h1>
         <p class="text-gray-600">Discover your next favorite film</p>
       </div>
 
@@ -48,7 +46,9 @@
 
       <!-- Loading -->
       <div v-if="isLoading" class="text-center py-24">
-        <div class="w-8 h-8 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin mx-auto"></div>
+        <div
+          class="w-8 h-8 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin mx-auto"
+        ></div>
         <p class="mt-4 text-gray-600">Loading movies...</p>
       </div>
 
@@ -62,7 +62,9 @@
 
       <!-- Movies Grid -->
       <div v-if="!isLoading && movies.length > 0" class="mb-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"
+        >
           <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" />
         </div>
       </div>
@@ -100,7 +102,7 @@
                 'px-3 py-2 rounded-md transition-colors',
                 currentPage === page
                   ? 'bg-gray-900 text-white'
-                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100',
               ]"
             >
               {{ page }}
@@ -134,99 +136,99 @@ import api from '@/services/api.ts'
 import type { Movie, MovieResponse } from '@/types/Movie'
 import MovieCard from '@/components/MovieCard.vue'
 
-const search = ref<string>('');
-const movies = ref<Movie[]>([]);
-const errorMessage = ref<string>('');
-const currentPage = ref<number>(1);
-const totalPages = ref<number>(1);
-const totalResults = ref<number>(0);
-const isLoading = ref<boolean>(false);
+const search = ref<string>('')
+const movies = ref<Movie[]>([])
+const errorMessage = ref<string>('')
+const currentPage = ref<number>(1)
+const totalPages = ref<number>(1)
+const totalResults = ref<number>(0)
+const isLoading = ref<boolean>(false)
 
 const fetchMovies = async (page: number = 1) => {
-  errorMessage.value = '';
-  isLoading.value = true;
+  errorMessage.value = ''
+  isLoading.value = true
   try {
     const response = await api.get<{ data: MovieResponse }>('/movies', {
-      params: { page }
-    });
-    movies.value = response.data.data.results;
-    currentPage.value = response.data.data.page;
-    totalPages.value = response.data.data.total_pages;
-    totalResults.value = response.data.data.total_results;
+      params: { page },
+    })
+    movies.value = response.data.data.results
+    currentPage.value = response.data.data.page
+    totalPages.value = response.data.data.total_pages
+    totalResults.value = response.data.data.total_results
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
-      errorMessage.value = error.response.data.message;
+      errorMessage.value = error.response.data.message
     } else {
-      errorMessage.value = 'Error fetching movies.';
+      errorMessage.value = 'Error fetching movies.'
     }
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 
 const searchMovies = async (page: number = 1) => {
-  errorMessage.value = '';
-  isLoading.value = true;
+  errorMessage.value = ''
+  isLoading.value = true
   try {
     const response = await api.get<{ data: MovieResponse }>('/movies/search', {
       params: {
         query: search.value,
-        page
+        page,
       },
-    });
-    movies.value = response.data.data.results;
-    currentPage.value = response.data.data.page;
-    totalPages.value = response.data.data.total_pages;
-    totalResults.value = response.data.data.total_results;
+    })
+    movies.value = response.data.data.results
+    currentPage.value = response.data.data.page
+    totalPages.value = response.data.data.total_pages
+    totalResults.value = response.data.data.total_results
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
-      errorMessage.value = error.response.data.message;
+      errorMessage.value = error.response.data.message
     } else {
-      errorMessage.value = 'Error searching movies.';
+      errorMessage.value = 'Error searching movies.'
     }
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 }
 
 const goToPage = (page: number) => {
   if (search.value) {
-    searchMovies(page);
+    searchMovies(page)
   } else {
-    fetchMovies(page);
+    fetchMovies(page)
   }
-};
+}
 
 const clearSearch = () => {
-  search.value = '';
-  fetchMovies(1);
-};
+  search.value = ''
+  fetchMovies(1)
+}
 
 const getVisiblePages = () => {
-  const pages = [];
-  const current = currentPage.value;
-  const total = totalPages.value;
+  const pages = []
+  const current = currentPage.value
+  const total = totalPages.value
   if (total <= 7) {
     for (let i = 1; i <= total; i++) {
-      pages.push(i);
+      pages.push(i)
     }
   } else {
-    pages.push(1);
+    pages.push(1)
     if (current > 4) {
-      pages.push('...');
+      pages.push('...')
     }
-    const start = Math.max(2, current - 2);
-    const end = Math.min(total - 1, current + 2);
+    const start = Math.max(2, current - 2)
+    const end = Math.min(total - 1, current + 2)
     for (let i = start; i <= end; i++) {
-      pages.push(i);
+      pages.push(i)
     }
     if (current < total - 3) {
-      pages.push('...');
+      pages.push('...')
     }
-    pages.push(total);
+    pages.push(total)
   }
-  return pages;
-};
+  return pages
+}
 
-onMounted(() => fetchMovies());
+onMounted(() => fetchMovies())
 </script>
