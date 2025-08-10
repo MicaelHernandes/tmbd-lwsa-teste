@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterUserRequest;
-use App\Services\TMDB\Auth\UserService;
+use App\Services\Auth\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
