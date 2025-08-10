@@ -185,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import api from '@/services/api.ts'
 import { useRouter } from 'vue-router'
 
@@ -273,4 +273,8 @@ const handleRegister = async () => {
     isLoading.value = false
   }
 }
+
+onMounted(() => {
+  document.title = 'Cadastro - Movie App'
+})
 </script>

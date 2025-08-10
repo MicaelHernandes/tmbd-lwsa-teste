@@ -230,5 +230,8 @@ const getVisiblePages = () => {
   return pages
 }
 
-onMounted(() => fetchMovies())
+onMounted(() => {
+  document.title = 'Filmes - Movie App'
+  fetchMovies()
+})
 </script>

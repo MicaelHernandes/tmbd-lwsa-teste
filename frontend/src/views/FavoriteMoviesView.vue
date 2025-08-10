@@ -179,5 +179,8 @@ const removeFromFavorites = async (movieId: number) => {
 const filterByGenre = () => {
 }
 
-onMounted(() => fetchFavoriteMovies())
+onMounted(() => {
+  document.title = 'Filmes Favoritos - Movie App'
+  fetchFavoriteMovies()
+})
 </script>
