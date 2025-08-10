@@ -18,4 +18,24 @@ describe('Verificação de validações para realizar operação de criação' ,
        $response->assertUnprocessable()
                 ->assertJsonValidationErrors(['movie_id']);
    });
+
+   it('Campo movie_id deve ser um número inteiro', function () {
+       $user = User::factory()->create();
+       $response = $this->actingAs($user)->postJson(route('favorite_movies.store'), [
+           'movie_id' => 'abc',
+       ]);
+
+       $response->assertUnprocessable()
+                ->assertJsonValidationErrors(['movie_id']);
+   });
+
+    it('Campo movie_id deve ser maior que zero', function () {
+         $user = User::factory()->create();
+         $response = $this->actingAs($user)->postJson(route('favorite_movies.store'), [
+              'movie_id' => 0,
+         ]);
+
+         $response->assertUnprocessable()
+                 ->assertJsonValidationErrors(['movie_id']);
+    });
 });
