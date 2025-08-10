@@ -18,7 +18,9 @@ class MovieController extends Controller
     public function search(MovieSearchRequest $request)
     {
         try{
-            $response = $this->movieService->getMovieByName($request->query('query'));
+            $page = $request->query('page', 1);
+            $language = $request->query('language', 'pt-BR');
+            $response = $this->movieService->getMovieByName($request->query('query'), $page, $language);
             return response()->json(['data' => $response]);
         }catch (\Throwable $th){
             return response()->json(['error' => 'Erro ao buscar filmes: '.$th->getMessage()], 500);

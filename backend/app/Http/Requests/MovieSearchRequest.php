@@ -23,6 +23,8 @@ class MovieSearchRequest extends FormRequest
     {
         return [
             'query' => 'required|string|min:2|max:255',
+            'page' => 'integer|min:1|nullable',
+            'language' => 'string|nullable',
         ];
     }
 
@@ -38,6 +40,9 @@ class MovieSearchRequest extends FormRequest
             'query.string' => 'O campo query deve ser uma string.',
             'query.min' => 'O campo query deve ter no mínimo :min caracteres.',
             'query.max' => 'O campo query deve ter no máximo :max caracteres.',
+            'page.integer' => 'O campo page deve ser um número inteiro.',
+            'page.min' => 'O campo page deve ser pelo menos :min.',
+            'language.string' => 'O campo language deve ser uma string.',
         ];
     }
 }
