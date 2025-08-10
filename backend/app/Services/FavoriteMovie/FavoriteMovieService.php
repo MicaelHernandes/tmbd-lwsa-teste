@@ -21,6 +21,14 @@ class FavoriteMovieService
             throw new \Exception('Usuário não autenticado.');
         }
 
+        $existingFavorite = $this->model->where('user_id', $user->id)
+            ->where('movie_id', $movieId)
+            ->first();
+
+        if($existingFavorite) {
+            throw new \Exception('Filme já está nos favoritos.');
+        }
+
         $this->model->create([
             'user_id' => $user->id,
             'movie_id' => $movieId,
