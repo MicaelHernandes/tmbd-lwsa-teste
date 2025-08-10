@@ -34,3 +34,15 @@ describe('Validação de Listagem de Filmes Favoritos', function () {
                  ->assertJsonValidationErrors(['genre']);
     });
 });
+
+describe('Listagem de filmes favoritos', function () {
+   it('Deve retornar 200 e uma arra de filmes favoritos', function () {
+       $user = User::factory()->create();
+       $this->actingAs($user);
+
+       $response = $this->getJson(route('favorite_movies.index'));
+
+       $response->assertStatus(200)
+                ->assertJson([]);
+   });
+});
