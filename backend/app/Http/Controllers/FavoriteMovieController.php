@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FavoriteMovieDeleteRequest;
+use App\Http\Requests\FavoriteMovieListRequest;
 use App\Http\Requests\FavoriteMovieStoreRequest;
 use App\Services\FavoriteMovie\FavoriteMovieService;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +16,9 @@ class FavoriteMovieController extends Controller
     public function __construct(FavoriteMovieService $favoriteMovieService)
     {
         $this->favoriteMovieService = $favoriteMovieService;
+    }
+    public function index(FavoriteMovieListRequest $request) : JsonResponse
+    {
     }
 
     public function store(FavoriteMovieStoreRequest $request) : JsonResponse
