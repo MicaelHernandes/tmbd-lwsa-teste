@@ -39,3 +39,17 @@ describe('Verificação de validações para realizar operação de criação' ,
                  ->assertJsonValidationErrors(['movie_id']);
     });
 });
+
+describe('Criação de favorito', function () {
+    it('Usuário autenticado pode criar favorito', function () {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson(route('favorite_movies.store'), [
+            'movie_id' => 1,
+        ]);
+
+        $response->assertCreated()
+                 ->assertJson([
+                     'message' => 'Filme adicionado aos favoritos com sucesso.',
+                 ]);
+    });
+});
