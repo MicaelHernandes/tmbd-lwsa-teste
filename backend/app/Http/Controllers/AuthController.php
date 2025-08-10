@@ -6,6 +6,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterUserRequest;
 use App\Services\Auth\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
     public function me() : JsonResponse
     {
-        return response()->json(['user' => auth()->user()], 200);
+        return response()->json(['user' => Auth::user()], 200);
     }
 
     public function register(AuthRegisterUserRequest $request) : JsonResponse
