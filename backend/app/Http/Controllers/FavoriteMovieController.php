@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FavoriteMovieDeleteRequest;
 use App\Http\Requests\FavoriteMovieStoreRequest;
 use App\Services\FavoriteMovie\FavoriteMovieService;
 use Illuminate\Http\JsonResponse;
@@ -27,5 +28,10 @@ class FavoriteMovieController extends Controller
                 'error' => $th->getMessage(),
             ], 500);
         }
+    }
+
+    public function destroy(FavoriteMovieDeleteRequest $request)
+    {
+
     }
 }
