@@ -34,4 +34,22 @@ class FavoriteMovieService
             'movie_id' => $movieId,
         ]);
     }
+
+    public function removeFromFavorites(int $movieId): void
+    {
+        $user = auth()->user();
+        if (!$user) {
+            throw new \Exception('Usuário não autenticado.');
+        }
+
+        $favorite = $this->model->where('user_id', $user->id)
+            ->where('movie_id', $movieId)
+            ->first();
+
+        if (!$favorite) {
+            throw new \Exception('Filme não encontrado nos favoritos.');
+        }
+
+        $favorite->delete();
+    }
 }

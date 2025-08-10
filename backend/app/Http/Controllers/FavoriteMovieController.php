@@ -32,6 +32,14 @@ class FavoriteMovieController extends Controller
 
     public function destroy(FavoriteMovieDeleteRequest $request)
     {
-
+        try{
+            $this->favoriteMovieService->removeFromFavorites($request->input('movie_id'));
+            return response()->noContent();
+        }catch (\Throwable $th){
+            return response()->json([
+                'message' => 'Erro ao remover filme dos favoritos.',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
     }
 }
