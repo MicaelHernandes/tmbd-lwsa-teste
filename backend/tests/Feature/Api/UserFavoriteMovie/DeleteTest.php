@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\UserFavoriteMovie;
 
 describe('Verificação de campos obrigatórios ao deletar um filme favorito', function () {
     it('Deve retornar erro quando usuario não autenticado tenta deletar um filme favorito', function () {
@@ -34,5 +35,28 @@ describe('Verificação de campos obrigatórios ao deletar um filme favorito', f
                 'movie_id' => 9999,
             ]))
             ->assertUnprocessable()->assertJsonValidationErrors(['movie_id']);
+    });
+});
+
+describe('Deletar filme favorito', function () {
+    it('Deve deletar um filme favorito com sucesso', function () {
+        $user = User::factory()->create();
+        $movieId = 1;
+
+        UserFavoriteMovie::create([
+            'user_id' => $user->id,
+            'movie_id' => $movieId,
+        ]);
+
+        $this->actingAs($user)
+            ->deleteJson(route('favorite_movies.destroy', [
+                'movie_id' => $movieId,
+            ]))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('favorite_movies', [
+            'user_id' => $user->id,
+            'movie_id' => $movieId,
+        ]);
     });
 });
