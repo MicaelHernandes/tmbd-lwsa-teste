@@ -51,13 +51,16 @@ export const useAuth = () => {
     }
   }
 
-  const login = async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
+  const login = async (
+    email: string,
+    password: string,
+  ): Promise<{ success: boolean; message?: string }> => {
     isLoading.value = true
 
     try {
       const response = await api.post<AuthResponse>('/auth/login', {
         email,
-        password
+        password,
       })
 
       if (response.data?.token && response.data?.user) {
@@ -91,7 +94,12 @@ export const useAuth = () => {
     }
   }
 
-  const register = async (name: string, email: string, password: string, passwordConfirmation: string): Promise<{ success: boolean; message?: string }> => {
+  const register = async (
+    name: string,
+    email: string,
+    password: string,
+    passwordConfirmation: string,
+  ): Promise<{ success: boolean; message?: string }> => {
     isLoading.value = true
 
     try {
@@ -99,7 +107,7 @@ export const useAuth = () => {
         name,
         email,
         password,
-        password_confirmation: passwordConfirmation
+        password_confirmation: passwordConfirmation,
       })
 
       if (response.data?.token && response.data?.user) {
@@ -160,6 +168,6 @@ export const useAuth = () => {
     checkAuthentication,
     login,
     register,
-    logout
+    logout,
   }
 }

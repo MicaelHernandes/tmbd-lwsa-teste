@@ -20,7 +20,7 @@ const router = createRouter({
         {
           path: '/favorite',
           name: 'favorite-movies',
-          component: FavoriteMoviesView
+          component: FavoriteMoviesView,
         },
       ],
     },

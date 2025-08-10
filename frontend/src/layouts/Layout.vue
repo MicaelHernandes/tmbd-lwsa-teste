@@ -16,5 +16,4 @@
 import AppHeader from '@/components/AppHeader.vue'
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

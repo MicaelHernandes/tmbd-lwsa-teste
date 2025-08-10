@@ -59,7 +59,9 @@
         class="absolute top-3 left-3 bg-gray-400 text-white p-2 rounded-full shadow-md cursor-not-allowed"
         title="Adicionando..."
       >
-        <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        <div
+          class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+        ></div>
       </button>
     </div>
 
@@ -123,7 +125,7 @@ const addToFavorites = async () => {
 
   try {
     await api.post('/favorite_movies', null, {
-      params: { movie_id: props.movie.id }
+      params: { movie_id: props.movie.id },
     })
     alert('Filme adicionado aos favoritos com sucesso!')
   } catch (error: any) {

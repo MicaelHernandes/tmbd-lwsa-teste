@@ -38,7 +38,7 @@
         <p class="text-gray-600">
           Mostrando {{ filteredMovies.length }} filmes favoritos
           <span v-if="selectedGenre" class="font-medium">
-            em {{ availableGenres.find(g => g.id === selectedGenre)?.name }}
+            em {{ availableGenres.find((g) => g.id === selectedGenre)?.name }}
           </span>
         </p>
       </div>
@@ -58,7 +58,12 @@
               title="Remover dos favoritos"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
               </svg>
             </button>
 
@@ -71,7 +76,12 @@
               />
               <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
                 <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h4a1 1 0 0 1 0 2h-1v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6H3a1 1 0 0 1 0-2h4zM6 6v14h12V6H6zm3 3a1 1 0 0 1 2 0v8a1 1 0 0 1-2 0V9zm4 0a1 1 0 0 1 2 0v8a1 1 0 0 1-2 0V9z"></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 4V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h4a1 1 0 0 1 0 2h-1v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6H3a1 1 0 0 1 0-2h4zM6 6v14h12V6H6zm3 3a1 1 0 0 1 2 0v8a1 1 0 0 1-2 0V9zm4 0a1 1 0 0 1 2 0v8a1 1 0 0 1-2 0V9z"
+                  ></path>
                 </svg>
               </div>
             </div>
@@ -82,7 +92,9 @@
                 <span>{{ new Date(movie.release_date).getFullYear() }}</span>
                 <div class="flex items-center">
                   <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    ></path>
                   </svg>
                   <span>{{ movie.vote_average.toFixed(1) }}</span>
                 </div>
@@ -101,13 +113,20 @@
         </div>
       </div>
 
-      <div v-if="!isLoading && filteredMovies.length === 0 && !errorMessage" class="text-center py-24">
+      <div
+        v-if="!isLoading && filteredMovies.length === 0 && !errorMessage"
+        class="text-center py-24"
+      >
         <div class="text-6xl mb-6 opacity-30">��️</div>
         <h3 class="text-xl font-medium text-gray-900 mb-2">
           {{ selectedGenre ? 'Nenhum filme favorito neste gênero' : 'Nenhum filme favorito ainda' }}
         </h3>
         <p class="text-gray-600">
-          {{ selectedGenre ? 'Tente selecionar um gênero diferente' : 'Comece adicionando filmes aos seus favoritos' }}
+          {{
+            selectedGenre
+              ? 'Tente selecionar um gênero diferente'
+              : 'Comece adicionando filmes aos seus favoritos'
+          }}
         </p>
       </div>
     </div>
@@ -126,8 +145,8 @@ const selectedGenre = ref<number | string>('')
 
 const availableGenres = computed<Genre[]>(() => {
   const genresMap = new Map<number, Genre>()
-  movies.value.forEach(movie => {
-    movie.genres.forEach(genre => {
+  movies.value.forEach((movie) => {
+    movie.genres.forEach((genre) => {
       genresMap.set(genre.id, genre)
     })
   })
@@ -136,8 +155,8 @@ const availableGenres = computed<Genre[]>(() => {
 
 const filteredMovies = computed<Movie[]>(() => {
   if (!selectedGenre.value) return movies.value
-  return movies.value.filter(movie =>
-    movie.genres.some(genre => genre.id === selectedGenre.value)
+  return movies.value.filter((movie) =>
+    movie.genres.some((genre) => genre.id === selectedGenre.value),
   )
 })
 
@@ -160,13 +179,12 @@ const fetchFavoriteMovies = async () => {
 
 const removeFromFavorites = async (movieId: number) => {
   try {
-    await api.delete(`/favorite_movies`,
-      {
-        params: {
-          movie_id: movieId
-        }
-      })
-    movies.value = movies.value.filter(movie => movie.id !== movieId)
+    await api.delete(`/favorite_movies`, {
+      params: {
+        movie_id: movieId,
+      },
+    })
+    movies.value = movies.value.filter((movie) => movie.id !== movieId)
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
       errorMessage.value = error.response.data.message
@@ -176,8 +194,7 @@ const removeFromFavorites = async (movieId: number) => {
   }
 }
 
-const filterByGenre = () => {
-}
+const filterByGenre = () => {}
 
 onMounted(() => {
   document.title = 'Filmes Favoritos - Movie App'
