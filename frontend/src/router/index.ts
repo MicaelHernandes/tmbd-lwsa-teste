@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Layout from '@/layouts/Layout.vue'
 import MoviesView from '@/views/MoviesView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
@@ -8,13 +9,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      component: Layout,
       children: [
         {
-          path: '/',
+          path: '',
           name: 'films',
           component: MoviesView,
         },
+      ],
+    },
+    {
+      path: '/auth',
+      children: [
         {
           path: '/login',
           name: 'login',
