@@ -37,6 +37,32 @@
           movie.vote_average ? movie.vote_average.toFixed(1) : 0.0
         }}</span>
       </div>
+
+      <button
+        v-if="isLoggedIn && !isAddingToFavorites"
+        @click.stop="addToFavorites"
+        class="absolute top-3 left-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-md transition-colors"
+        title="Adicionar aos favoritos"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
+
+      <button
+        v-if="isLoggedIn && isAddingToFavorites"
+        disabled
+        class="absolute top-3 left-3 bg-gray-400 text-white p-2 rounded-full shadow-md cursor-not-allowed"
+        title="Adicionando..."
+      >
+        <div
+          class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+        ></div>
+      </button>
     </div>
 
     <!-- Content -->
@@ -71,19 +97,59 @@
           {{ genre }}
         </span>
       </div>
+
+      <div v-if="errorMessage" class="mt-2 text-xs text-red-600 bg-red-50 px-2 py-1 rounded">
+        {{ errorMessage }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Movie } from '@/types/Movie'
+import { useAuth } from '@/composables/useAuth'
+import api from '@/services/api'
 
-defineProps<{ movie: Movie }>()
+const props = defineProps<{ movie: Movie }>()
+
+const { isLoggedIn } = useAuth()
+const isAddingToFavorites = ref<boolean>(false)
+const errorMessage = ref<string>('')
+
+const addToFavorites = async () => {
+  if (!isLoggedIn.value) return
+
+  isAddingToFavorites.value = true
+  errorMessage.value = ''
+
+  try {
+    await api.post('/favorite_movies', null, {
+      params: { movie_id: props.movie.id },
+    })
+    alert('Filme adicionado aos favoritos com sucesso!')
+  } catch (error: any) {
+    if (error.response?.data?.message) {
+      errorMessage.value = error.response.data.message
+    } else if (error.response?.data?.errors) {
+      const errors = Object.values(error.response.data.errors).flat()
+      errorMessage.value = errors[0] as string
+    } else {
+      errorMessage.value = 'Erro ao adicionar filme aos favoritos.'
+    }
+
+    setTimeout(() => {
+      errorMessage.value = ''
+    }, 5000)
+  } finally {
+    isAddingToFavorites.value = false
+  }
+}
 
 function formatDate(dateString: string) {
-  if (!dateString) return 'Date unavailable'
+  if (!dateString) return 'Data indisponível'
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('pt-BR', {
     year: 'numeric',
     month: 'short',
   })

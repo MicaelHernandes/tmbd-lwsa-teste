@@ -3,8 +3,8 @@
     <div class="w-full px-6 lg:px-12 py-12">
       <!-- Header -->
       <div class="text-center mb-16">
-        <h1 class="text-4xl font-medium text-gray-900 mb-2">Movie Catalog</h1>
-        <p class="text-gray-600">Discover your next favorite film</p>
+        <h1 class="text-4xl font-medium text-gray-900 mb-2">Catálogo de Filmes</h1>
+        <p class="text-gray-600">Descubra seu próximo filme favorito</p>
       </div>
 
       <!-- Search Section -->
@@ -13,7 +13,7 @@
           <div class="flex gap-2">
             <input
               v-model="search"
-              placeholder="Search movies..."
+              placeholder="Pesquisar filmes..."
               @keyup.enter="searchMovies(1)"
               class="flex-1 px-4 py-3 bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none"
             />
@@ -23,7 +23,7 @@
               :disabled="isLoading"
               class="px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {{ isLoading ? 'Searching...' : 'Search' }}
+              {{ isLoading ? 'Pesquisando...' : 'Pesquisar' }}
             </button>
 
             <button
@@ -31,7 +31,7 @@
               @click="clearSearch"
               class="px-4 py-3 text-gray-500 hover:text-gray-700 transition-colors"
             >
-              Clear
+              Limpar
             </button>
           </div>
         </div>
@@ -49,14 +49,14 @@
         <div
           class="w-8 h-8 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin mx-auto"
         ></div>
-        <p class="mt-4 text-gray-600">Loading movies...</p>
+        <p class="mt-4 text-gray-600">Carregando filmes...</p>
       </div>
 
       <!-- Results Info -->
       <div v-if="!isLoading && movies.length > 0" class="text-center mb-12">
         <p class="text-gray-600">
-          Showing {{ movies.length }} of {{ totalResults }} results
-          <span v-if="search" class="font-medium"> for "{{ search }}"</span>
+          Mostrando {{ movies.length }} de {{ totalResults }} resultados
+          <span v-if="search" class="font-medium"> para "{{ search }}"</span>
         </p>
       </div>
 
@@ -72,8 +72,8 @@
       <!-- No Results -->
       <div v-if="!isLoading && movies.length === 0 && !errorMessage" class="text-center py-24">
         <div class="text-6xl mb-6 opacity-30">🎬</div>
-        <h3 class="text-xl font-medium text-gray-900 mb-2">No movies found</h3>
-        <p class="text-gray-600">Try searching with different terms</p>
+        <h3 class="text-xl font-medium text-gray-900 mb-2">Nenhum filme encontrado</h3>
+        <p class="text-gray-600">Tente pesquisar com termos diferentes</p>
       </div>
 
       <!-- Pagination -->
@@ -83,14 +83,14 @@
           :disabled="currentPage === 1"
           class="px-3 py-2 text-gray-700 hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
-          First
+          Primeira
         </button>
         <button
           @click="goToPage(currentPage - 1)"
           :disabled="currentPage === 1"
           class="px-3 py-2 text-gray-700 hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
-          Prev
+          Anterior
         </button>
 
         <div class="flex gap-1">
@@ -116,14 +116,14 @@
           :disabled="currentPage === totalPages"
           class="px-3 py-2 text-gray-700 hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
-          Next
+          Próxima
         </button>
         <button
           @click="goToPage(totalPages)"
           :disabled="currentPage === totalPages"
           class="px-3 py-2 text-gray-700 hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
-          Last
+          Última
         </button>
       </div>
     </div>
@@ -159,7 +159,7 @@ const fetchMovies = async (page: number = 1) => {
     if (error.response && error.response.data && error.response.data.message) {
       errorMessage.value = error.response.data.message
     } else {
-      errorMessage.value = 'Error fetching movies.'
+      errorMessage.value = 'Erro ao buscar filmes.'
     }
   } finally {
     isLoading.value = false
@@ -184,7 +184,7 @@ const searchMovies = async (page: number = 1) => {
     if (error.response && error.response.data && error.response.data.message) {
       errorMessage.value = error.response.data.message
     } else {
-      errorMessage.value = 'Error searching movies.'
+      errorMessage.value = 'Erro ao pesquisar filmes.'
     }
   } finally {
     isLoading.value = false
@@ -230,5 +230,8 @@ const getVisiblePages = () => {
   return pages
 }
 
-onMounted(() => fetchMovies())
+onMounted(() => {
+  document.title = 'Filmes - Movie App'
+  fetchMovies()
+})
 </script>
