@@ -1,61 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Backend - API de Filmes
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma API RESTful desenvolvida em Laravel para cadastro, autenticação e gerenciamento de filmes favoritos dos usuários.
 
-## About Laravel
+## Requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP >= 8.1
+- Composer
+- SQLite (ou outro banco de dados configurado)
+- Docker (opcional)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instalação
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone o repositório:
+   ```bash
+   git clone <repo-url>
+   cd backend
+   ```
+2. Instale as dependências:
+   ```bash
+   composer install
+   ```
+3. Copie o arquivo de ambiente e configure:
+   ```bash
+   cp .env.example .env
+   # Edite o .env conforme necessário (DB_CONNECTION, etc)
+   ```
+4. Gere a chave da aplicação:
+   ```bash
+   ./vendor/bin/sail artisan key:generate
+   ```
+5. Execute as migrations:
+   ```bash
+   ./vendor/bin/sail artisan migrate
+   ```
 
-## Learning Laravel
+## Execução
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Com o Laravel Sail:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+./vendor/bin/sail up -d
+```
+A API estará disponível em `http://localhost` (ou porta configurada no docker-compose).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Autenticação
 
-## Laravel Sponsors
+A autenticação é feita via Sanctum (token). Para acessar rotas protegidas, registre-se e faça login para obter o token.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Rotas
 
-### Premium Partners
+### Auth
+- `POST /api/auth/register`  
+  Cadastro de usuário  
+  **Body:** `name`, `email`, `password`, `password_confirmation`
+- `POST /api/auth/login`  
+  Login do usuário  
+  **Body:** `email`, `password`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Filmes
+- `GET /api/movies`  
+  Lista todos os filmes
+- `GET /api/movies/search?query=nome`  
+  Busca filmes por nome
 
-## Contributing
+### Favoritos (Requer autenticação)
+- `GET /api/favorite_movies`  
+  Lista filmes favoritos do usuário autenticado
+- `POST /api/favorite_movies`  
+  Adiciona um filme aos favoritos  
+  **Body:** `movie_id` (ID do filme)
+- `DELETE /api/favorite_movies`  
+  Remove um filme dos favoritos  
+  **Body:** `movie_id` (ID do filme)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Validações
 
-## Code of Conduct
+- Cadastro: nome, email único, senha mínima de 8 caracteres e confirmação.
+- Login: email e senha obrigatórios.
+- Favoritos: `movie_id` obrigatório e válido.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Testes
 
-## Security Vulnerabilities
+Execute os testes dentro do Sail:
+```bash
+./vendor/bin/sail artisan test
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Estrutura
 
-## License
+- `app/Http/Controllers`: Controllers da API
+- `app/Models`: Modelos Eloquent
+- `app/Services`: Lógica de negócio (serviços)
+- `database/migrations`: Migrations do banco
+- `routes/api.php`: Definição das rotas da API
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Observações
+
+- Este backend deve ser executado dentro da pasta `backend` do projeto.
+- Utilize o token de autenticação retornado no login para acessar rotas protegidas, enviando no header:  
+  `Authorization: Bearer {token}`
+- A busca de filmes pode estar integrada a uma API externa (ex: TheMovieDB).
