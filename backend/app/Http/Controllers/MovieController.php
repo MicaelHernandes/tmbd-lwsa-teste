@@ -28,7 +28,7 @@ class MovieController extends Controller
         }
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(MovieIndexRequest $request): JsonResponse
     {
         try{
             $page = $request->query('page', 1);
