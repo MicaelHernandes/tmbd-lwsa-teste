@@ -52,4 +52,20 @@ describe('Criação de favorito', function () {
                      'message' => 'Filme adicionado aos favoritos com sucesso.',
                  ]);
     });
+
+    it('Usuário não pode adicionar o mesmo filme mais de uma vez aos favoritos', function () {
+        $user = User::factory()->create();
+        $this->actingAs($user)->postJson(route('favorite_movies.store'), [
+            'movie_id' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->postJson(route('favorite_movies.store'), [
+            'movie_id' => 1,
+        ]);
+
+        $response->assertUnprocessable()
+                 ->assertJson([
+                     'message' => 'Este filme já está adicionado aos favoritos.',
+                 ]);
+    });
 });
