@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MovieIndexRequest;
 use App\Http\Requests\MovieSearchRequest;
 use App\Services\TMDB\MovieService;
 use Illuminate\Http\JsonResponse;
