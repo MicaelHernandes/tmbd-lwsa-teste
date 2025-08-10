@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MovieSearchRequest;
 use App\Services\TMDB\MovieService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MovieController extends Controller
@@ -15,7 +16,7 @@ class MovieController extends Controller
         $this->movieService = $movieService;
     }
 
-    public function search(MovieSearchRequest $request)
+    public function search(MovieSearchRequest $request): JsonResponse
     {
         try{
             $page = $request->query('page', 1);
