@@ -95,4 +95,19 @@ class MovieService extends BaseService
 
         return null;
     }
+
+    public function getMovieById(int $id, string $language = "pt-BR"): mixed
+    {
+        $response = $this->sendRequest("/movie/{$id}", [
+            'language' => $language,
+        ]);
+
+        if ($response->successful()) {
+            $movie = $response->json();
+            $genres = $this->getGenresMap($language);
+            return $this->formatMovieData($movie, $genres);
+        }
+
+        return null;
+    }
 }

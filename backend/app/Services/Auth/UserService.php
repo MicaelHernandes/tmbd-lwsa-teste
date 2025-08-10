@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\TMDB\Auth;
+namespace App\Services\Auth;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
