@@ -11,5 +11,6 @@ Route::middleware('guest')->prefix('auth')->group(function () {
 });
 
 Route::prefix('movies')->group(function () {
+    Route::get('/', [MovieController::class, 'index'])->name('movies.index');
     Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
 });
