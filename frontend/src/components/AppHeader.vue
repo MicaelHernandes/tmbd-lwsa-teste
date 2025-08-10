@@ -24,6 +24,19 @@
         </RouterLink>
       </div>
       <div v-else-if="isAuthenticated && user" class="flex gap-4 items-center">
+        <RouterLink
+          to="/favorite"
+          class="text-white hover:bg-slate-700 px-4 py-2 rounded transition-colors flex items-center gap-2"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Favoritos
+        </RouterLink>
         <span class="text-gray-300 mr-4">Olá, {{ user.name }}!</span>
         <button
           @click="logout"
