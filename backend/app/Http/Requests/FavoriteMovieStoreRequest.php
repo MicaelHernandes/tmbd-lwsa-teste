@@ -23,7 +23,7 @@ class FavoriteMovieStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'movie_id' => 'required|integer|min:1',
+            'movie_id' => 'required|integer|min:1|unique:user_favorite_movies,movie_id,NULL,id,user_id,' . Auth::id(),
         ];
     }
 
@@ -39,6 +39,7 @@ class FavoriteMovieStoreRequest extends FormRequest
             'movie_id.required' => 'O campo movie_id é obrigatório.',
             'movie_id.integer' => 'O campo movie_id deve ser um número inteiro.',
             'movie_id.min' => 'O campo movie_id deve ser maior que zero.',
+            'movie_id.unique' => 'Este filme já está adicionado aos favoritos.',
         ];
     }
 }
