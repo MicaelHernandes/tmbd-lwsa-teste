@@ -27,4 +27,16 @@ class MovieController extends Controller
             return response()->json(['error' => 'Erro ao buscar filmes: '.$th->getMessage()], 500);
         }
     }
+
+    public function index(Request $request): JsonResponse
+    {
+        try{
+            $page = $request->query('page', 1);
+            $language = $request->query('language', 'pt-BR');
+            $response = $this->movieService->getAllMovies($page, $language);
+            return response()->json(['data' => $response]);
+        }catch (\Throwable $th){
+            return response()->json(['error' => 'Erro ao buscar filmes: '.$th->getMessage()], 500);
+        }
+    }
 }
