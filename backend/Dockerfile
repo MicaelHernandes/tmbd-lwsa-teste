@@ -12,12 +12,13 @@ COPY . .
 
 RUN touch database/database.sqlite
 
+RUN composer install
+
 RUN php artisan key:generate
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-RUN composer install
 
 RUN php artisan migrate
 
